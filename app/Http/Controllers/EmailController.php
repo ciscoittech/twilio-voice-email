@@ -18,7 +18,7 @@ class EmailController extends Controller
         $transcriptioUrl = $request->get('TranscriptionUrl');
         $sid = $request->get('ACCOUNT_SID');
         $auth_token = $request->get('AUTH_TOKEN');
-        $authorization = 'Basic' + base64_encode($sid.':'.'$auth_token');
+        $authorization = 'Basic' + base64_encode($sid.':'.$auth_token);
         $headers = array('Authorization' => $authorization);
         $response = $this->api_call($transcriptioUrl, null, 'GET', $headers);
         Log::debug($response);
