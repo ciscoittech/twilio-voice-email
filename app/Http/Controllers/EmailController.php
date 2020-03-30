@@ -18,7 +18,7 @@ class EmailController extends Controller
         $transcriptioUrl = $request->get('TranscriptionUrl');
         $sid = $request->get('ACCOUNT_SID');
         $auth_token = $request->get('AUTH_TOKEN');
-        $authorization = 'Basic' + base64_encode($sid.':'.$auth_token);
+        $authorization = 'Basic ' . base64_encode($sid.':'.$auth_token);
         $headers = array('Authorization' => $authorization);
         $response = $this->api_call($transcriptioUrl, null, 'GET', $headers);
         Log::debug($response);
@@ -40,21 +40,6 @@ class EmailController extends Controller
         curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 86400); // makes calls faster!
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         
-        switch($method) {
-            case 'GET':
-                if($param_string) {
-                    if(!is_string($param_string)) $param_string = http_build_query($param_string);
-                    $path .= '/'.$param_string;
-                }
-            break;
-            case 'POST':
-            break;
-        }
-        $headers = array_merge(array(
-            // 'X-Authorization' => $settings['api_key'],
-            // 'X-Requested-With' => 'XMLHttpRequest',
-            'Content-Type' => 'application/x-www-form-urlencoded'
-        ), $headers);
         $http_headers = array();
         foreach($headers as $header => $value) {
             $http_headers[] = $header.': '.$value;
@@ -67,12 +52,20 @@ class EmailController extends Controller
         curl_close($curl);
         unset($curl);
 
-        // try {
-        //     return $this->api_call_response($response, $response_code);
-        // } catch(Exception $exception) {
-        //     error_log($exception->getMessage());
-        //     return null;
-        // }
-        return $response;
+         
+        $xml = simplexml_load_string($response->getBody(),'SimpleXMLElement',LIBXML_NOCDATA);
+        // json
+        $json = json_encode($xml);
+
+        // array
+        $array = json_decode($json, true);
+
+        // array - dot notation
+        $array_dot = array_dot($array);
+
+        // collection
+        $collection = collect($array);
+
+        return $collection;
     }
 }
