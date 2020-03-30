@@ -23,7 +23,7 @@ class EmailController extends Controller
         $response = $this->api_call($transcriptioUrl, null, 'GET', $headers);
         Log::debug($response);
         $receiver = "tbattlehunt@zobosolutions.com";
-        // Mail::to($receiver)->send(new TranscriptionResultEmail($response));
+        Mail::to($receiver)->send(new TranscriptionResultEmail($response['Transcription']['TranscriptionText']));
         return response()->json(['message' => 'Successfully received the record'], 200);
     }
     private function api_call($path, $param_string='', $method='GET', $headers=array()) {
@@ -52,20 +52,12 @@ class EmailController extends Controller
         curl_close($curl);
         unset($curl);
 
-         
-        $xml = simplexml_load_string($response->getBody(),'SimpleXMLElement',LIBXML_NOCDATA);
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         // json
         $json = json_encode($xml);
-
         // array
         $array = json_decode($json, true);
 
-        // array - dot notation
-        $array_dot = array_dot($array);
-
-        // collection
-        $collection = collect($array);
-
-        return $collection;
+        return $array;
     }
 }
