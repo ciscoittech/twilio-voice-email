@@ -60,7 +60,7 @@ class EmailController extends Controller
             $http_headers[] = $header.': '.$value;
         }
         if(!empty($http_headers)) curl_setopt($curl, CURLOPT_HTTPHEADER, $http_headers);
-        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_URL, $path);
     
         $response = curl_exec($curl);
         $response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
