@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Mail\TranscriptionResultEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
-use App\Models\Email;
+use App\Models\Email\Email;
 use Log;
 
 class TwilioVoiceEmailController extends Controller
