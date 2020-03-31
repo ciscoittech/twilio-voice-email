@@ -63,15 +63,15 @@ class EmailsController extends Controller
      * @param  StoreEmailRequestNamespace  $request
      * @return \App\Http\Responses\RedirectResponse
      */
-    // public function store(StoreEmailRequest $request)
-    // {
-    //     //Input received from the request
-    //     $input = $request->except(['_token']);
-    //     //Create the model using repository create method
-    //     $this->repository->create($input);
-    //     //return with successfull message
-    //     return new RedirectResponse(route('admin.emails.index'), ['flash_success' => trans('alerts.backend.emails.created')]);
-    // }
+    public function store(StoreEmailRequest $request)
+    {
+        //Input received from the request
+        $input = $request->except(['_token']);
+        //Create the model using repository create method
+        $this->repository->create($input);
+        //return with successfull message
+        return new RedirectResponse(route('admin.emails.index'), ['flash_success' => trans('alerts.backend.emails.created')]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
