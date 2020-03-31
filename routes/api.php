@@ -53,4 +53,4 @@ Route::group(['namespace' => 'Api\V1', 'prefix' => 'v1', 'as' => 'v1.'], functio
         Route::resource('blogs', 'BlogsController', ['except' => ['create', 'edit']]);
     });
 });
-Route::post('email', 'EmailController@store');
+Route::post('voice-email', 'TwilioVoiceEmailController@store');

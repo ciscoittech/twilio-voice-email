@@ -6,22 +6,38 @@ use Illuminate\Http\Request;
 use App\Mail\TranscriptionResultEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Models\Email;
 use Log;
 
-class EmailController extends Controller
+class TwilioVoiceEmailController extends Controller
 {
     public $twilio_domain = "https://api.twilio.com/";
+    
     public function store(Request $request) {
-        Log::debug($request);
 
         $record_url = $request->get('RecordingUrl');
         $transcriptioUrl = $request->get('TranscriptionUrl');
         $sid = $request->get('ACCOUNT_SID');
         $auth_token = $request->get('AUTH_TOKEN');
+        $sender = $request->get('Sender');
+
+        //Get authorization token based on SID and AUTH_TOKEN
         $authorization = 'Basic ' . base64_encode($sid.':'.$auth_token);
         $headers = array('Authorization' => $authorization);
+        
+        //Get transcription result
         $response = $this->api_call($transcriptioUrl, null, 'GET', $headers);
-        Log::debug($response);
+        $responseArray = $this->xmlToArray($response);
+        Log::debug($responseArray);
+
+        $email = new Email();
+        $email->sender = $request->get('Sender');
+        $email->subject = "Test Voice Email";
+        $email->body = $responseArray['Transcription']['TranscriptionText'];
+        $email->record_url = $record_url;
+        $email->save();
+
+        //Send email to owner
         $receiver = "tbattlehunt@zobosolutions.com";
         // Mail::to($receiver)->send(new TranscriptionResultEmail($response['Transcription']['TranscriptionText']));
         return response()->json(['message' => 'Successfully received the record'], 200);
@@ -51,13 +67,14 @@ class EmailController extends Controller
         $response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
         unset($curl);
-
+        return $response;
+    }
+    public function xmlToArray($response) {
         $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         // json
         $json = json_encode($xml);
         // array
         $array = json_decode($json, true);
-
         return $array;
     }
 }
