@@ -116,7 +116,7 @@ return [
     "subject" => "Subject",
     "body" => "Body",
     "sender" => "Sender",
-	"createdat" => "Created At",
+	"createdat" => "Received At",
 	],
 	],
 	"blogcategories" => [

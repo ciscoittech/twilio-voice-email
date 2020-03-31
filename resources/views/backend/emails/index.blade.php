@@ -26,7 +26,7 @@
                             <th>{{ trans('labels.backend.emails.table.body') }}</th>
                             <th>{{ trans('labels.backend.emails.table.sender') }}</th>
                             <th>{{ trans('labels.backend.emails.table.createdat') }}</th>
-                            <th>{{ trans('labels.general.actions') }}</th>
+                            {{-- <th>{{ trans('labels.general.actions') }}</th> --}}
                         </tr>
                     </thead>
                     <thead class="transparent-bg">
@@ -36,7 +36,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
+                            {{-- <th></th> --}}
                         </tr>
                     </thead>
                 </table>
