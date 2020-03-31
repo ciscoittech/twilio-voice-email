@@ -71,7 +71,7 @@
                     {data: 'body', name: '{{config('module.emails.table')}}.body'},
                     {data: 'sender', name: '{{config('module.emails.table')}}.sender'},
                     {data: 'created_at', name: '{{config('module.emails.table')}}.created_at'},
-                    {data: 'actions', name: 'actions', searchable: false, sortable: false}
+                    // {data: 'actions', name: 'actions', searchable: false, sortable: false}
                 ],
                 order: [[0, "asc"]],
                 searchDelay: 500,
