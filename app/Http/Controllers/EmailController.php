@@ -21,9 +21,9 @@ class EmailController extends Controller
         $authorization = 'Basic ' . base64_encode($sid.':'.$auth_token);
         $headers = array('Authorization' => $authorization);
         $response = $this->api_call($transcriptioUrl, null, 'GET', $headers);
-        Log::debug($response);
+        Log::debug($response['Transcription']['TranscriptionText']);
         $receiver = "tbattlehunt@zobosolutions.com";
-        Mail::to($receiver)->send(new TranscriptionResultEmail($response['Transcription']['TranscriptionText']));
+        // Mail::to($receiver)->send(new TranscriptionResultEmail($response['Transcription']['TranscriptionText']));
         return response()->json(['message' => 'Successfully received the record'], 200);
     }
     private function api_call($path, $param_string='', $method='GET', $headers=array()) {
