@@ -67,6 +67,9 @@
                 },
                 columns: [
                     {data: 'id', name: '{{config('module.emails.table')}}.id'},
+                    {data: 'subject', name: '{{config('module.emails.table')}}.subject'},
+                    {data: 'body', name: '{{config('module.emails.table')}}.body'},
+                    {data: 'sender', name: '{{config('module.emails.table')}}.sender'},
                     {data: 'created_at', name: '{{config('module.emails.table')}}.created_at'},
                     {data: 'actions', name: 'actions', searchable: false, sortable: false}
                 ],
